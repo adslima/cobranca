@@ -1,15 +1,14 @@
 package com.algaworks.cobranca.controller;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.algaworks.cobranca.model.StatusTitulo;
 import com.algaworks.cobranca.model.Titulo;
+import com.algaworks.cobranca.repository.Titulos;
 
 /**
  * 
@@ -17,16 +16,21 @@ import com.algaworks.cobranca.model.Titulo;
  *
  */
 @Controller
-@RequestMapping("/titulo")
+@RequestMapping("/titulos")
 public class TituloController {
+
+	@Autowired
+	private Titulos titulos;
 
 	/**
 	 * 
 	 * @return
 	 */
 	@RequestMapping("/novo")
-	public String novo() {
-		return "CadastroTitulo";
+	public ModelAndView novo() {
+		ModelAndView mvNovo = new ModelAndView("CadastroTitulo");
+		mvNovo.addObject("todosStatusTitulos", StatusTitulo.values());
+		return mvNovo;
 	}
 
 	/**
@@ -34,11 +38,13 @@ public class TituloController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String salvar(Titulo titulo) {
-		System.out.println(">>>>>>>>>>>>>" + titulo.getDescricao()+ "" + titulo.getCodigo());
-		
-		// TODO: Salvar no banco de dados
-		return "CadastroTitulo";
+	public ModelAndView salvar(Titulo titulo) {
+
+		this.titulos.save(titulo);
+
+		ModelAndView mv = new ModelAndView("CadastroTitulo");
+		mv.addObject("message", "Titulo Salvo com sucesso!");
+		return mv;
 	}
 
 }

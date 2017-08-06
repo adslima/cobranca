@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -21,7 +22,10 @@
 			</div>
 		</div>
 	</nav>
-	<form class="form-horizontal" method="POST" action = "/titulo">
+	<form class="form-horizontal" method="POST" action="/titulos">
+		<div class="alert alert-success" th:if="${!#strings.isEmpty(message)}">
+			<span th:text="${message}">Titulo salvo com sucesso!</span>
+		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h1 class="panel-title">Novo título</h1>
@@ -52,8 +56,8 @@
 					<label for="status" class="col-sm-2 control-label">Status</label>
 					<div class="col-sm-2">
 						<select class="form-control" name="status">
-							<option value="PENDENTE">Pendente</option>
-							<option value="RECEBIDO">Recebido</option>
+							<option th:each="status: ${todosStatusTitulos}"
+								th:value="${status}" th:text="${status.descricao}"></option>
 						</select>
 					</div>
 				</div>
