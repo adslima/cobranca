@@ -47,6 +47,10 @@ public class TituloController {
 		return mv;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@RequestMapping
 	public String pesquisar() {
 		return "PesquisaTitulos";
